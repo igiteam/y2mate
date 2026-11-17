@@ -125,7 +125,7 @@
       flex-wrap: wrap;
       font-size: 14px;
     }
-    header .menu a, header .menu p, footer .menu a {
+    header .menu a, header .menu p {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -141,7 +141,7 @@
       opacity: .94;
       cursor: pointer;
     }
-    header .menu a:hover, header .menu p:hover, footer .menu a:hover {
+    header .menu a:hover, header .menu p:hover {
       transform: none;
       border-color: transparent;
       background: transparent;
@@ -151,7 +151,7 @@
     #darkModeSwitch { cursor: pointer; margin: 0; }
 
     /* ===== MAIN CARD ===== */
-    #main, #contact-form, .contact-form {
+    #main {
       width: min(var(--rn-max), 100%);
       margin-left: auto;
       margin-right: auto;
@@ -391,25 +391,6 @@
       flex-wrap: wrap;
     }
 
-    /* ===== FOOTER ===== */
-    footer {
-      width: min(var(--rn-max), calc(100% - 8px));
-      margin: 0 auto;
-      padding: 6px 0 0;
-    }
-    footer .menu {
-      justify-content: center;
-      gap: 28px;
-    }
-    body:not(.dark-mode) footer .menu a,
-    body:not(.dark-mode) footer .menu a:hover {
-      color: #0f172a;
-    }
-    body.dark-mode footer .menu a,
-    body.dark-mode footer .menu a:hover {
-      color: var(--page-text);
-    }
-
     /* ===== UTILITY ===== */
     .d-none { display: none !important; }
     .d-block { display: block !important; }
@@ -431,7 +412,7 @@
       }
       body > header > a { justify-content: center; }
       .menu { justify-content: center; }
-      header .menu a, header .menu p, footer .menu a { flex: 0 0 auto; }
+      header .menu a, header .menu p { flex: 0 0 auto; }
       #main { padding: 38px 18px 24px; border-radius: 8px; }
       #main h1#title { font-size: 1.75rem; }
       #main .tagline { font-size: 1rem; line-height: 1.55; }
@@ -487,11 +468,10 @@
   <!-- ===== HEADER ===== -->
   <header>
     <a href="/">
-      <img alt="Y2Mate" id="logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 50'%3E%3Crect width='200' height='50' fill='none'/%3E%3Ctext x='10' y='38' font-family='system-ui,sans-serif' font-weight='700' font-size='32' fill='%23ef4444'%3EY2%3C/text%3E%3Ctext x='68' y='38' font-family='system-ui,sans-serif' font-weight='700' font-size='32' fill='%23a78bfa'%3EMate%3C/text%3E%3C/svg%3E" width="200" height="50" fetchpriority="high">
+      <img alt="Y2Mate" id="logo" src="https://raw.githubusercontent.com/igiteam/y2mate/6f16057cc8a7299d107df45b7f0681b40ca1cf3f/logo.svg" width="200" height="50" fetchpriority="high">
     </a>
     <div class="menu">
       <a href="/">Home</a>
-      <a href="/contact/">Contact</a>
       <p id="darkModeSwitch" aria-label="Switch to light mode">Light Mode ☼</p>
     </div>
   </header>
@@ -509,8 +489,8 @@
           <div id="format-box">
             <p>Format</p>
             <select aria-label="format" id="format">
+              <option value="1" selected>MP4</option>
               <option value="0">MP3</option>
-              <option value="1">MP4</option>
             </select>
           </div>
           <div id="mp3" style="display: none;">
@@ -549,15 +529,6 @@
       <div aria-live="polite" class="form-state" id="form-result"></div>
     </div>
   </div>
-
-  <!-- ===== FOOTER ===== -->
-  <footer>
-    <div class="menu">
-      <a href="/privacy-policy/">Privacy Policy</a>
-      <a href="/terms-of-use/">Terms of Use</a>
-      <a href="/dmca/">DMCA</a>
-    </div>
-  </footer>
 
   <!-- ===== JAVASCRIPT ===== -->
   <script>
