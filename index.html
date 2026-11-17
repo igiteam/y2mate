@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Video Downloader - Y2Mate</title>
+  <meta name="description" content="Y2Mate is a safe, ad-free YouTube video downloader for MP3 audio and MP4 video. Fast online conversion, no registration needed.">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { min-height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-weight: 300;
+      margin: 0 auto;
+      padding: 0 14px 54px;
+      color: var(--page-text);
+      background: radial-gradient(1200px 700px at 12% 2%, rgba(236, 72, 153, .16), transparent 58%),
+                  radial-gradient(900px 600px at 88% 10%, rgba(147, 51, 234, .16), transparent 55%),
+                  radial-gradient(1200px 700px at 50% 110%, rgba(17, 24, 39, .10), transparent 60%),
+                  #f7f3fb;
+      background-attachment: scroll;
+      overflow-x: hidden;
+      transition: background .3s ease, color .3s ease;
+    }
+
+    /* ===== CSS VARIABLES (LIGHT DEFAULT) ===== */
+    :root {
+      --rn-bg: #070A0F;
+      --rn-text: rgba(255, 255, 255, .92);
+      --rn-muted: rgba(255, 255, 255, .68);
+      --rn-muted-2: rgba(255, 255, 255, .55);
+      --rn-border: rgba(255, 255, 255, .12);
+      --rn-border-soft: rgba(255, 255, 255, .06);
+      --rn-panel: rgba(255, 255, 255, .06);
+      --rn-panel-strong: rgba(255, 255, 255, .1);
+      --rn-accent-a: #ef4444;
+      --rn-accent-b: #22c55e;
+      --rn-shadow: 0 24px 80px rgba(0, 0, 0, .58);
+      --rn-shadow-soft: 0 14px 40px rgba(0, 0, 0, .45);
+      --rn-radius: 8px;
+      --rn-radius-sm: 8px;
+      --rn-max: 1160px;
+
+      --page-text: #0f172a;
+      --page-muted: rgba(15, 23, 42, .78);
+      --page-muted-2: rgba(15, 23, 42, .62);
+      --page-border: rgba(15, 23, 42, .14);
+      --page-border-soft: rgba(15, 23, 42, .1);
+      --page-panel: rgba(255, 255, 255, .84);
+      --page-panel-strong: rgba(255, 255, 255, .96);
+      --page-input: #ffffff;
+      --page-link: #111827;
+      --page-link-hover: #16a34a;
+      --page-button-text: #ffffff;
+      --page-button-shadow: 0 18px 60px rgba(34, 197, 94, .18);
+    }
+
+    body.dark-mode {
+      --page-text: var(--rn-text);
+      --page-muted: var(--rn-muted);
+      --page-muted-2: var(--rn-muted-2);
+      --page-border: var(--rn-border);
+      --page-border-soft: var(--rn-border-soft);
+      --page-panel: var(--rn-panel);
+      --page-panel-strong: var(--rn-panel-strong);
+      --page-input: rgba(255, 255, 255, .04);
+      --page-link: rgba(255, 255, 255, .92);
+      --page-link-hover: #ffffff;
+      --page-button-text: #ffffff;
+      --page-button-shadow: 0 18px 60px rgba(34, 197, 94, .22);
+      background: radial-gradient(1200px 700px at 15% 0%, rgba(236, 72, 153, .24), transparent 58%),
+                  radial-gradient(900px 600px at 85% 12%, rgba(147, 51, 234, .28), transparent 55%),
+                  radial-gradient(1200px 700px at 45% 110%, rgba(17, 24, 39, .72), transparent 60%),
+                  #07070f;
+    }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1, h2, h3, h4 {
+      color: var(--page-text);
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+    p, li, label, time { color: var(--page-muted); }
+    a {
+      color: var(--page-link);
+      text-decoration: none;
+      transition: color .15s ease, transform .15s ease, opacity .15s ease, border-color .15s ease, background .15s ease;
+    }
+    a:hover { color: var(--page-link-hover); }
+
+    /* ===== HEADER ===== */
+    body > header {
+      width: min(var(--rn-max), calc(100% - 8px));
+      min-height: auto;
+      margin: 24px auto 0;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border: 1px solid var(--page-border-soft);
+      border-radius: var(--rn-radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .03));
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+      text-align: left;
+    }
+    body > header > a {
+      display: inline-flex;
+      align-items: center;
+      min-width: fit-content;
+    }
+    #logo {
+      width: 200px;
+      height: auto;
+      display: block;
+    }
+    body:not(.dark-mode) #logo { filter: none; }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+    header .menu a, header .menu p, footer .menu a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: auto;
+      padding: 6px 2px;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      color: var(--page-text);
+      font-weight: 650;
+      line-height: 1;
+      white-space: nowrap;
+      opacity: .94;
+      cursor: pointer;
+    }
+    header .menu a:hover, header .menu p:hover, footer .menu a:hover {
+      transform: none;
+      border-color: transparent;
+      background: transparent;
+      color: var(--page-text);
+      opacity: 1;
+    }
+    #darkModeSwitch { cursor: pointer; margin: 0; }
+
+    /* ===== MAIN CARD ===== */
+    #main, #article, #contact-form, .contact-form {
+      width: min(var(--rn-max), 100%);
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid var(--page-border-soft);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .03));
+      box-shadow: 0 10px 28px rgba(0, 0, 0, .18);
+    }
+    body:not(.dark-mode) #main, body:not(.dark-mode) #article {
+      background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(248, 250, 252, .94));
+      box-shadow: 0 22px 56px rgba(15, 23, 42, .08);
+    }
+    #main {
+      max-width: 980px;
+      margin-top: 26px;
+      margin-bottom: 26px;
+      padding: 52px 32px 36px;
+      border-radius: 8px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, .22);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 3;
+      overflow: visible;
+    }
+    #main h1#title {
+      height: auto;
+      margin: 18px 0 14px;
+      font-size: 2rem;
+      line-height: 1.02;
+      text-align: center;
+    }
+    #main .tagline {
+      display: block;
+      margin: 0 auto 24px;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      color: var(--page-muted);
+      font-size: 1.2rem;
+      line-height: 1.55;
+      letter-spacing: .01em;
+      max-width: 860px;
+      text-align: center;
+    }
+
+    /* ===== NOTICE BARS ===== */
+    #donate-message, #reddit-message, #desktop-app-alert {
+      width: fit-content;
+      max-width: min(100%, 720px);
+      margin: 0 auto 14px;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      color: var(--page-muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    #donate-message, #desktop-app-alert {
+      width: min(100%, 760px);
+      margin-left: auto;
+      margin-right: auto;
+      padding: 12px 16px;
+      border: 1px solid var(--page-border-soft);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .025));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px 12px;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+    #donate-message {
+      margin-bottom: 18px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 14px 16px;
+      padding: 20px 22px;
+    }
+    body:not(.dark-mode) #donate-message, body:not(.dark-mode) #desktop-app-alert {
+      border-color: rgba(15, 23, 42, .1);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(247, 250, 252, .94));
+      box-shadow: 0 14px 34px rgba(15, 23, 42, .05);
+    }
+
+    .notice-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .06);
+      color: var(--page-text);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    #donate-message .notice-badge { background: rgba(239, 68, 68, .14); color: #fecaca; }
+    #desktop-app-alert .notice-badge { background: rgba(34, 197, 94, .14); color: #bbf7d0; }
+    body:not(.dark-mode) .notice-badge { background: #e8eefc; color: #166534; }
+    body:not(.dark-mode) #donate-message .notice-badge { background: #fde7f1; color: #b91c1c; }
+    body:not(.dark-mode) #desktop-app-alert .notice-badge { background: #e0edff; color: #15803d; }
+
+    .notice-copy { color: var(--page-muted); }
+    #donate-message .notice-copy {
+      flex: 0 1 auto;
+      max-width: 640px;
+      text-align: left;
+      white-space: nowrap;
+    }
+    body:not(.dark-mode) .notice-copy { color: rgba(15, 23, 42, .72); }
+
+    .donate-button, .external-link-button, .desktop-app-button {
+      color: inherit;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: .18em;
+      cursor: pointer;
+    }
+    #donate-message .donate-button, #desktop-app-alert .desktop-app-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: .01em;
+      transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
+    }
+    #donate-message .donate-button {
+      border: 1px solid rgba(239, 68, 68, .28);
+      background: linear-gradient(135deg, rgba(239, 68, 68, .2), rgba(245, 158, 11, .18));
+      color: #ffffff;
+      box-shadow: 0 10px 28px rgba(239, 68, 68, .14);
+    }
+    #desktop-app-alert .desktop-app-button {
+      border: 1px solid rgba(34, 197, 94, .24);
+      background: rgba(34, 197, 94, .12);
+      color: var(--page-text);
+    }
+    body:not(.dark-mode) #donate-message .donate-button {
+      border-color: rgba(219, 39, 119, .34);
+      background: linear-gradient(135deg, #ef4444, #f59e0b);
+      color: #ffffff;
+      box-shadow: 0 12px 28px rgba(244, 114, 182, .2);
+    }
+    body:not(.dark-mode) #desktop-app-alert .desktop-app-button {
+      border-color: rgba(34, 197, 94, .28);
+      background: #e7f0ff;
+      color: #15803d;
+    }
+    #donate-message .donate-button:hover, #desktop-app-alert .desktop-app-button:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    /* ===== FORM ===== */
+    #main #form {
+      position: relative;
+      width: min(100%, 820px);
+      height: auto;
+      margin: 34px auto 28px;
+      padding: 12px 0 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      display: grid;
+      align-items: stretch;
+      min-height: 330px;
+      gap: 0;
+      overflow: visible;
+      justify-content: center;
+    }
+
+    .form-state {
+      grid-area: 1 / 1;
+      width: 100%;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+    }
+    .form-state.is-active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: none;
+    }
+
+    #form-idle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    #url, .form-control, input[type="text"], input[type="email"], textarea, select {
+      width: 100%;
+      border: 1px solid var(--page-border-soft);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .06);
+      color: var(--page-text);
+      font-family: inherit;
+      font-size: 15px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .03);
+    }
+    #url {
+      width: min(100%, 680px);
+      min-height: 58px;
+      padding: 18px 20px;
+    }
+    #url::placeholder, .form-control::placeholder, textarea::placeholder {
+      color: var(--page-muted);
+    }
+    body:not(.dark-mode) #url, body:not(.dark-mode) .form-control,
+    body:not(.dark-mode) input[type="text"], body:not(.dark-mode) input[type="email"],
+    body:not(.dark-mode) textarea, body:not(.dark-mode) select,
+    body:not(.dark-mode) #format, body:not(.dark-mode) #mp3-quality,
+    body:not(.dark-mode) #mp4-quality {
+      border-color: rgba(15, 23, 42, .12);
+      background: #ffffff;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, .03), inset 0 1px 0 rgba(255, 255, 255, .95);
+    }
+    body.dark-mode #url, body.dark-mode .form-control, body.dark-mode input[type="text"],
+    body.dark-mode input[type="email"], body.dark-mode textarea, body.dark-mode select,
+    body.dark-mode #format, body.dark-mode #mp3-quality, body.dark-mode #mp4-quality {
+      background: var(--page-input);
+      color: var(--page-text);
+      border-color: var(--page-border-soft);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+    #url:focus, .form-control:focus, input[type="text"]:focus,
+    input[type="email"]:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: rgba(34, 197, 94, .45);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, .12);
+    }
+
+    #quality-selector {
+      width: min(100%, 760px);
+      min-height: 0;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 22px;
+      flex-wrap: wrap;
+      margin-bottom: 0;
+    }
+    #quality-selector > div {
+      flex: 1 1 280px;
+      min-width: 240px;
+      max-width: 340px;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+    }
+    #quality-selector p {
+      margin: 0 0 8px;
+      color: var(--page-muted);
+      font-size: 13px;
+      text-align: left;
+      font-weight: 500;
+    }
+    body:not(.dark-mode) #quality-selector p { color: rgba(15, 23, 42, .72); }
+
+    #format, #mp3-quality, #mp4-quality {
+      width: 100%;
+      height: 50px;
+      padding: 0 14px;
+      border-radius: 16px;
+    }
+
+    /* ===== BUTTONS ===== */
+    #download-button, #home-button, #convert-button, #donate-button, #trim-button,
+    .btn-dark, input[type="submit"].btn, input[type="submit"].btn-dark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(236, 72, 153, .96), rgba(147, 51, 234, .94) 52%, rgba(255, 43, 92, 0.98));
+      color: var(--page-button-text);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: 0 8px 18px rgba(147, 51, 234, .18);
+      cursor: pointer;
+      border: none;
+      transition: opacity .2s ease, transform .15s ease;
+    }
+    #download-button:hover, #home-button:hover, #convert-button:hover,
+    #donate-button:hover, #trim-button:hover, .btn-dark:hover,
+    input[type="submit"].btn:hover, input[type="submit"].btn-dark:hover {
+      opacity: .92;
+      transform: translateY(-1px);
+    }
+    #home-button {
+      border-color: var(--page-border);
+      background: rgba(255, 255, 255, .05);
+      box-shadow: none;
+    }
+    #convert-button {
+      font-size: 16px;
+      width: auto;
+      min-width: 160px;
+    }
+
+    /* ===== LOADING & RESULT ===== */
+    #form-loading, #form-result {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 12px 0;
+      text-align: center;
+    }
+    #status-text { color: var(--page-muted); font-size: 0.98rem; margin: 0; }
+    .progress-message { color: var(--page-text); font-size: 1.05rem; font-weight: 650; margin: 0; }
+
+    .loading-spinner {
+      border: 4px solid rgba(255, 255, 255, .5);
+      border-radius: 50%;
+      border-top: 4px solid #000;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #result-actions {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* ===== ARTICLE ===== */
+    #article {
+      max-width: 980px;
+      margin-top: 0;
+      margin-bottom: 26px;
+      padding: 40px clamp(22px, 4vw, 44px);
+      border-radius: 8px;
+      font-size: 16px;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+      content-visibility: auto;
+      contain-intrinsic-size: 900px;
+    }
+    #article h1 {
+      height: auto;
+      margin: 0 0 20px;
+      font-size: 2.4rem;
+      text-align: left;
+    }
+    #article h2, #article h3, #article h4 {
+      margin: 30px 0 14px;
+      text-align: left;
+    }
+    #article h2 { font-size: 28px; }
+    #article h3 { font-size: 20px; }
+    #article p, #article li {
+      font-size: 15px;
+      line-height: 1.8;
+      text-align: left;
+    }
+    #article time {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 0 0 0 14px;
+      border: none;
+      border-left: 1px solid var(--page-border);
+      border-radius: 0;
+      background: transparent;
+      font-size: 13px;
+      letter-spacing: .02em;
+    }
+    body.dark-mode #article h2, body.dark-mode #article h3, body.dark-mode #article h4 {
+      color: var(--page-text);
+    }
+    #article ol, #article ul { padding-left: 22px; }
+    #article li + li { margin-top: 10px; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      width: min(var(--rn-max), calc(100% - 8px));
+      margin: 0 auto;
+      padding: 6px 0 0;
+    }
+    footer .menu {
+      justify-content: center;
+      gap: 28px;
+    }
+    body:not(.dark-mode) footer .menu a,
+    body:not(.dark-mode) footer .menu a:hover {
+      color: #0f172a;
+    }
+    body.dark-mode footer .menu a,
+    body.dark-mode footer .menu a:hover {
+      color: var(--page-text);
+    }
+
+    /* ===== UTILITY ===== */
+    .d-none { display: none !important; }
+    .d-block { display: block !important; }
+
+    /* ===== RESPONSIVE ===== */
+    @media only screen and (max-width: 980px) {
+      body > header { width: calc(100% - 8px); }
+      #main, #article, #contact-form, .message { width: 100%; }
+    }
+
+    @media only screen and (max-width: 780px) {
+      body { padding: 0 10px 38px; background: linear-gradient(180deg, rgba(147, 51, 234, .18), rgba(17, 24, 39, .08)), #07070f; }
+      body:not(.dark-mode) { background: radial-gradient(1200px 700px at 12% 2%, rgba(236, 72, 153, .16), transparent 58%), radial-gradient(900px 600px at 88% 10%, rgba(147, 51, 234, .16), transparent 55%), radial-gradient(1200px 700px at 50% 110%, rgba(17, 24, 39, .10), transparent 60%), #f7f3fb; }
+      body > header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+        text-align: center;
+      }
+      body > header > a { justify-content: center; }
+      .menu { justify-content: center; }
+      header .menu a, header .menu p, footer .menu a { flex: 0 0 auto; }
+      #main { padding: 38px 18px 24px; border-radius: 8px; }
+      #main h1#title { font-size: 1.75rem; }
+      #main .tagline { font-size: 1rem; line-height: 1.55; }
+      #main #form { max-width: 100%; padding: 8px 0 0; margin-block: 24px; border-radius: 0; min-height: 360px; gap: 16px; }
+      #form-idle { width: 90vw; gap: 16px; }
+      #form-idle #url, #main #form #url {
+        width: 90% !important;
+        max-width: 90% !important;
+        margin-inline: auto !important;
+        align-self: center;
+        min-height: 50px;
+        padding: 20px 18px !important;
+        font-size: 17px !important;
+      }
+      #quality-selector { gap: 12px; align-items: flex-end; }
+      #quality-selector > div {
+        min-width: 0;
+        max-width: none;
+        width: calc(50% - 6px);
+        flex: 1 1 calc(50% - 6px);
+      }
+      #quality-selector > div:first-child { width: calc(42% - 6px); flex: 0 1 calc(42% - 6px); }
+      #quality-selector > div:last-child { width: calc(58% - 6px); flex: 1 1 calc(58% - 6px); }
+      #quality-selector p { margin-bottom: 6px; }
+      #convert-button { min-height: 50px; width: 100%; }
+      #form-result { align-items: stretch; }
+      #result-actions { gap: 12px; }
+      #result-actions > * { width: 100%; }
+      #donate-message, #desktop-app-alert { padding: 14px 14px; }
+      #donate-message { flex-direction: column; justify-content: center; flex-wrap: wrap; gap: 12px; }
+      #donate-message .notice-copy { text-align: center; white-space: normal; }
+      #download-button, #home-button, #convert-button, #donate-button, #trim-button,
+      .btn-dark, input[type="submit"].btn, input[type="submit"].btn-dark { width: 100%; }
+      #article { padding: 28px 18px; }
+      body > header, #main, #article, #contact-form, .contact-form, .message { box-shadow: none !important; }
+    }
+
+    @media only screen and (max-width: 520px) {
+      #main #form { min-height: 340px; }
+      #quality-selector { gap: 10px; }
+      #quality-selector > div { width: calc(50% - 5px); flex: 1 1 calc(50% - 5px); }
+      #form-idle #url, #main #form #url {
+        width: 92% !important;
+        max-width: 92% !important;
+        margin-inline: auto !important;
+        min-height: 50px;
+        padding: 22px 18px !important;
+        font-size: 18px !important;
+      }
+      #quality-selector > div:first-child { width: calc(40% - 5px); flex: 0 1 calc(40% - 5px); }
+      #quality-selector > div:last-child { width: calc(60% - 5px); flex: 1 1 calc(60% - 5px); }
+    }
+  </style>
+</head>
+<body class="dark-mode">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <a href="/">
+      <img alt="Y2Mate" id="logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 50'%3E%3Crect width='200' height='50' fill='none'/%3E%3Ctext x='10' y='38' font-family='system-ui,sans-serif' font-weight='700' font-size='32' fill='%23ef4444'%3EY2%3C/text%3E%3Ctext x='68' y='38' font-family='system-ui,sans-serif' font-weight='700' font-size='32' fill='%23a78bfa'%3EMate%3C/text%3E%3C/svg%3E" width="200" height="50" fetchpriority="high">
+    </a>
+    <div class="menu">
+      <a href="/">Home</a>
+      <a href="/contact/">Contact</a>
+      <p id="darkModeSwitch" aria-label="Switch to light mode">Light Mode ☼</p>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <div id="main">
+    <h1 id="title">YouTube Video Downloader</h1>
+    <p class="tagline">100% safe, Ad-free YouTube to MP3 and MP4 converter</p>
+
+    <p id="donate-message">
+      <span class="notice-badge">Support</span>
+      <span class="notice-copy">Please donate to cover server costs.</span>
+      <a class="donate-button" href="/ko-fi/" rel="nofollow" target="_blank">Donate</a>
+    </p>
+
+    <div data-state="idle" id="form">
+      <!-- IDLE STATE -->
+      <div class="form-state is-active" id="form-idle">
+        <input autocapitalize="none" autocomplete="off" id="url" inputmode="url" placeholder="Paste YouTube URL..." spellcheck="false" type="url">
+        <div id="quality-selector">
+          <div id="format-box">
+            <p>Format</p>
+            <select aria-label="format" id="format">
+              <option value="0">MP3</option>
+              <option value="1">MP4</option>
+            </select>
+          </div>
+          <div id="mp3" style="display: none;">
+            <p>MP3 quality</p>
+            <select aria-label="mp3-quality" id="mp3-quality">
+              <option value="320">320k</option>
+              <option value="256">256k</option>
+              <option value="192">192k</option>
+              <option value="128">128k</option>
+              <option value="96">96k</option>
+              <option value="64">64k</option>
+            </select>
+          </div>
+          <div id="mp4" style="display: block;">
+            <p>MP4 quality</p>
+            <select aria-label="mp4-quality" id="mp4-quality">
+              <option value="1080">1080p</option>
+              <option value="720">720p</option>
+              <option value="480">480p</option>
+              <option value="360">360p</option>
+              <option value="240">240p</option>
+            </select>
+          </div>
+        </div>
+        <button aria-label="convert" id="convert-button" type="submit">Download</button>
+      </div>
+
+      <!-- LOADING STATE -->
+      <div aria-busy="true" aria-live="polite" class="form-state" id="form-loading">
+        <p id="status-text">Preparing your download</p>
+        <p class="progress-message" id="progress">Downloading...</p>
+        <div aria-hidden="true" class="loading-spinner" id="loading-spinner"></div>
+      </div>
+
+      <!-- RESULT STATE -->
+      <div aria-live="polite" class="form-state" id="form-result"></div>
+    </div>
+
+    <p id="desktop-app-alert">
+      <span class="notice-badge">Desktop App</span>
+      <span class="notice-copy">Try our Windows and Mac App</span>
+      <a class="desktop-app-button" href="https://ytdfp.com/" rel="sponsored" target="_blank">Download</a>
+    </p>
+  </div>
+
+  <!-- ===== ARTICLE ===== -->
+  <div id="article">
+    <h2>Y2Mate: YouTube Video Downloader, Free and Safe YouTube to MP3 and MP4 Converter</h2>
+    <time datetime="17 Nov 2026 01:23:17 PM">17 Nov 2026 01:23:17 PM</time>
+    <p><a href="/">Y2Mate</a> is designed for anyone who needs a straightforward way to save YouTube videos for offline listening or watching. Copy a YouTube video link or Shorts link, choose MP3 or MP4, pick the quality you want, and start the download without registering an account.</p>
+    <p>This YouTube video downloader keeps the main workflow simple. MP3 is useful for podcasts, music, lectures, interviews, and other audio-based content. MP4 is the better option when you want the full video available on your smartphone, laptop, tablet, or desktop.</p>
+    <h3>Why Choose Y2Mate?</h3>
+    <ul>
+      <li>The interface is ad-free and does not display unnecessary pop-ups.</li>
+      <li>Support for YouTube to MP3 audio downloads and YouTube to MP4 video downloads.</li>
+      <li>Quality options range from lighter files to higher quality output.</li>
+      <li>Works in modern browsers on Windows, Mac, Android, and iOS.</li>
+    </ul>
+    <h3>How It Works</h3>
+    <ol>
+      <li>Copy the YouTube video URL or Shorts URL.</li>
+      <li>Paste the link into the Y2Mate download box.</li>
+      <li>Select MP3 or MP4.</li>
+      <li>Choose the best quality for your device and connection.</li>
+      <li>Save the converted file.</li>
+    </ol>
+    <p>Most downloads take only a few clicks. The page is designed to keep the format, quality, and download controls visible, so you can finish the conversion quickly.</p>
+    <h3>Choosing MP3 or MP4 Quality</h3>
+    <p>For spoken audio, the standard MP3 option is usually enough and helps keep file sizes smaller. Music listeners may prefer higher bitrates if the original video has clear audio. For video downloads, lower MP4 resolutions download faster, while 720p or 1080p is better when you want a clearer picture.</p>
+    <h3>Why Y2Mate Stands Out</h3>
+    <p>Y2Mate focuses on a simple YouTube converter experience, with no sign-up required, easy controls, and support for the standard formats people use most. It is built for quick personal downloads and frequent use without making the site feel crowded.</p>
+    <h3>Responsible Use</h3>
+    <p>You should only convert or download content when you are legally allowed to do it. Copyright rules, creator rights, and platform terms remain in effect. Y2Mate is best suited for personal use, public-domain media, your own uploads, or other content where offline saving is permitted.</p>
+    <p>Copy the video URL, select the format, and download the file you need. The process is quick with Y2Mate, so the media you want is ready at the time and place you need it.</p>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="menu">
+      <a href="/privacy-policy/">Privacy Policy</a>
+      <a href="/terms-of-use/">Terms of Use</a>
+      <a href="/dmca/">DMCA</a>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    (function() {
+      'use strict';
+
+      // ---- DOM refs ----
+      var darkModeSwitch = document.getElementById('darkModeSwitch');
+      var formatSelect = document.getElementById('format');
+      var mp3Div = document.getElementById('mp3');
+      var mp4Div = document.getElementById('mp4');
+      var mp3Quality = document.getElementById('mp3-quality');
+      var mp4Quality = document.getElementById('mp4-quality');
+      var convertButton = document.getElementById('convert-button');
+      var urlInput = document.getElementById('url');
+      var formIdle = document.getElementById('form-idle');
+      var formLoading = document.getElementById('form-loading');
+      var formResult = document.getElementById('form-result');
+      var statusText = document.getElementById('status-text');
+      var progressText = document.getElementById('progress');
+
+      // ---- Dark mode toggle ----
+      darkModeSwitch.addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        var isDark = document.body.classList.contains('dark-mode');
+        darkModeSwitch.textContent = isDark ? 'Light Mode ☼' : 'Dark Mode ☾';
+        darkModeSwitch.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+      });
+
+      // ---- Format toggle (MP3 / MP4) ----
+      function updateFormatVisibility() {
+        var val = formatSelect.value;
+        if (val === '0') {
+          mp3Div.style.display = 'block';
+          mp4Div.style.display = 'none';
+        } else {
+          mp3Div.style.display = 'none';
+          mp4Div.style.display = 'block';
+        }
+      }
+      formatSelect.addEventListener('change', updateFormatVisibility);
+
+      // ---- Form state helpers ----
+      function setState(state) {
+        formIdle.classList.remove('is-active');
+        formLoading.classList.remove('is-active');
+        formResult.classList.remove('is-active');
+
+        if (state === 'idle') {
+          formIdle.classList.add('is-active');
+        } else if (state === 'loading') {
+          formLoading.classList.add('is-active');
+        } else if (state === 'result') {
+          formResult.classList.add('is-active');
+        }
+      }
+
+      // ---- Extract YouTube ID from URL ----
+      function extractVideoId(input) {
+        if (!input) return null;
+        input = input.trim();
+        // If it's just an ID (11 chars), return as-is
+        if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
+        // Try various YouTube URL patterns
+        var patterns = [
+          /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/|youtube\.com\/v\/)([a-zA-Z0-9_-]{11})/,
+          /[?&]v=([a-zA-Z0-9_-]{11})/
+        ];
+        for (var i = 0; i < patterns.length; i++) {
+          var m = input.match(patterns[i]);
+          if (m) return m[1];
+        }
+        return null;
+      }
+
+      // ---- Build full YouTube URL from ID ----
+      function buildUrl(id) {
+        return 'https://www.youtube.com/watch?v=' + id;
+      }
+
+      // ---- Convert handler ----
+      function doConvert() {
+        var rawUrl = urlInput.value.trim();
+        if (!rawUrl) {
+          urlInput.focus();
+          return;
+        }
+
+        // Extract video ID to validate
+        var videoId = extractVideoId(rawUrl);
+        if (!videoId) {
+          // Still allow it — maybe the API handles other formats
+          videoId = rawUrl;
+        }
+
+        // Show loading
+        setState('loading');
+        statusText.textContent = 'Preparing your download';
+        progressText.textContent = 'Downloading...';
+
+        // Determine format and quality
+        var isMp3 = formatSelect.value === '0';
+        var format = isMp3 ? 'mp3' : 'mp4';
+        var quality = isMp3 ? mp3Quality.value : mp4Quality.value;
+
+        // Build API URL — replace with your actual API endpoint
+        // The API should accept: url (or id), format, quality
+        var apiBase = window.__API_BASE__ || '/api/convert';
+        var params = new URLSearchParams();
+        params.set('url', rawUrl);
+        params.set('id', videoId);
+        params.set('format', format);
+        params.set('quality', quality);
+
+        // Simulate API call for demo purposes.
+        // Replace the setTimeout block below with a real fetch:
+        //
+        // fetch(apiBase + '?' + params.toString())
+        //   .then(function(res) { return res.json(); })
+        //   .then(function(data) {
+        //     if (data.error) { showError(data.error); return; }
+        //     showResult(data.download_url || data.url, format, quality);
+        //   })
+        //   .catch(function(err) { showError(err.message); });
+        //
+        setTimeout(function() {
+          // Simulated success
+          var qualityLabel = isMp3 ? quality + 'k' : quality + 'p';
+          showResult('#', format.toUpperCase(), qualityLabel);
+        }, 1800);
+      }
+
+      function showResult(downloadUrl, format, qualityLabel) {
+        setState('result');
+        formResult.innerHTML = [
+          '<p style="color:var(--page-muted);font-size:0.95rem;margin:0 0 8px;">Your ' + format + ' file is ready!</p>',
+          '<div id="result-actions">',
+          '  <a href="' + downloadUrl + '" id="download-link" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:14px 22px;border-radius:999px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 8px 18px rgba(34,197,94,.25);">Download ' + format + ' (' + qualityLabel + ')</a>',
+          '  <button id="new-download-btn" style="display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:14px 22px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--page-text);font-weight:700;font-size:15px;border:1px solid var(--page-border-soft);cursor:pointer;">New Download</button>',
+          '</div>'
+        ].join('');
+
+        var newBtn = document.getElementById('new-download-btn');
+        if (newBtn) {
+          newBtn.addEventListener('click', function() {
+            setState('idle');
+            urlInput.value = '';
+            urlInput.focus();
+            formResult.innerHTML = '';
+          });
+        }
+      }
+
+      function showError(message) {
+        setState('result');
+        formResult.innerHTML = [
+          '<p style="color:#f87171;font-size:1rem;font-weight:600;margin:0 0 12px;">' + message + '</p>',
+          '<div id="result-actions">',
+          '  <button id="retry-btn" style="display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:14px 22px;border-radius:999px;background:linear-gradient(135deg,#ef4444,#f59e0b);color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;">Try Again</button>',
+          '</div>'
+        ].join('');
+
+        var retryBtn = document.getElementById('retry-btn');
+        if (retryBtn) {
+          retryBtn.addEventListener('click', function() {
+            setState('idle');
+            formResult.innerHTML = '';
+          });
+        }
+      }
+
+      // ---- Convert button ----
+      convertButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        doConvert();
+      });
+
+      // ---- Enter key on URL input triggers convert ----
+      urlInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          doConvert();
+        }
+      });
+
+      // ---- URL PARAMETER AUTO-DOWNLOAD ----
+      // Supports: ?url=... (or ?id=...), ?format=mp3|mp4 (or ?mp3 / ?mp4)
+      // ?quality=320 (for mp3) or ?quality=1080 (for mp4)
+      function autoDownloadFromParams() {
+        var search = new URLSearchParams(window.location.search);
+
+        // Accept both ?url= and ?id=
+        var rawUrl = search.get('url') || search.get('id') || '';
+        if (!rawUrl) return; // no auto-download
+
+        var videoId = extractVideoId(rawUrl);
+        if (!videoId && /^[a-zA-Z0-9_-]{11}$/.test(rawUrl)) {
+          videoId = rawUrl;
+        }
+
+        // Determine format from params
+        var formatParam = (search.get('format') || '').toLowerCase();
+        var isMp3 = false;
+        if (formatParam === 'mp3' || search.has('mp3')) {
+          isMp3 = true;
+        } else if (formatParam === 'mp4' || search.has('mp4')) {
+          isMp3 = false;
+        }
+
+        // Set format select
+        formatSelect.value = isMp3 ? '0' : '1';
+        updateFormatVisibility();
+
+        // Determine quality
+        var qualityParam = search.get('quality') || search.get('q') || '';
+        if (isMp3) {
+          // Default to highest: 320
+          if (qualityParam) {
+            // Accept "128", "128k", "128 kbps"
+            var q = qualityParam.replace(/[^0-9]/g, '');
+            var opts = Array.from(mp3Quality.options).map(function(o) { return o.value; });
+            if (opts.indexOf(q) !== -1) {
+              mp3Quality.value = q;
+            } else {
+              mp3Quality.value = '320'; // highest fallback
+            }
+          } else {
+            mp3Quality.value = '320'; // highest default
+          }
+        } else {
+          // Default to highest: 1080
+          if (qualityParam) {
+            var q = qualityParam.replace(/[^0-9]/g, '');
+            var opts = Array.from(mp4Quality.options).map(function(o) { return o.value; });
+            if (opts.indexOf(q) !== -1) {
+              mp4Quality.value = q;
+            } else {
+              mp4Quality.value = '1080'; // highest fallback
+            }
+          } else {
+            mp4Quality.value = '1080'; // highest default
+          }
+        }
+
+        // Set URL input
+        urlInput.value = videoId ? buildUrl(videoId) : rawUrl;
+
+        // Trigger conversion after a short delay (so page settles)
+        setTimeout(function() {
+          doConvert();
+        }, 300);
+      }
+
+      // ---- Init ----
+      if (document.body.classList.contains('dark-mode')) {
+        darkModeSwitch.textContent = 'Light Mode ☼';
+      } else {
+        darkModeSwitch.textContent = 'Dark Mode ☾';
+      }
+
+      // Run auto-download if params present
+      autoDownloadFromParams();
+
+    })();
+  </script>
+
+</body>
+</html>
