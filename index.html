@@ -754,4 +754,77 @@
         if (!rawUrl) return; // no auto-download
 
         var videoId = extractVideoId(rawUrl);
-        if
+        if (!videoId && /^[a-zA-Z0-9_-]{11}$/.test(rawUrl)) {
+          videoId = rawUrl;
+        }
+
+        // Determine format from params
+        var formatParam = (search.get('format') || '').toLowerCase();
+        var isMp3 = false;
+        if (formatParam === 'mp3' || search.has('mp3')) {
+          isMp3 = true;
+        } else if (formatParam === 'mp4' || search.has('mp4')) {
+          isMp3 = false;
+        } else {
+          // Default format: MP4
+          isMp3 = false;
+        }
+
+        // Set format select
+        formatSelect.value = isMp3 ? '0' : '1';
+        updateFormatVisibility();
+
+        // Determine quality
+        var qualityParam = search.get('quality') || search.get('q') || '';
+        if (isMp3) {
+          // Default to highest: 320
+          if (qualityParam) {
+            var q = qualityParam.replace(/[^0-9]/g, '');
+            var opts = Array.from(mp3Quality.options).map(function(o) { return o.value; });
+            if (opts.indexOf(q) !== -1) {
+              mp3Quality.value = q;
+            } else {
+              mp3Quality.value = '320'; // highest fallback
+            }
+          } else {
+            mp3Quality.value = '320'; // highest default
+          }
+        } else {
+          // Default to highest: 1080
+          if (qualityParam) {
+            var q = qualityParam.replace(/[^0-9]/g, '');
+            var opts = Array.from(mp4Quality.options).map(function(o) { return o.value; });
+            if (opts.indexOf(q) !== -1) {
+              mp4Quality.value = q;
+            } else {
+              mp4Quality.value = '1080'; // highest fallback
+            }
+          } else {
+            mp4Quality.value = '1080'; // highest default
+          }
+        }
+
+        // Set URL input
+        urlInput.value = videoId ? buildUrl(videoId) : rawUrl;
+
+        // Trigger conversion after a short delay (so page settles)
+        setTimeout(function() {
+          doConvert();
+        }, 300);
+      }
+
+      // ---- Init ----
+      if (document.body.classList.contains('dark-mode')) {
+        darkModeSwitch.textContent = 'Light Mode ☼';
+      } else {
+        darkModeSwitch.textContent = 'Dark Mode ☾';
+      }
+
+      // Run auto-download if params present
+      autoDownloadFromParams();
+
+    })();
+  </script>
+
+</body>
+</html>
