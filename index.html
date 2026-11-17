@@ -151,7 +151,7 @@
     #darkModeSwitch { cursor: pointer; margin: 0; }
 
     /* ===== MAIN CARD ===== */
-    #main, #article, #contact-form, .contact-form {
+    #main, #contact-form, .contact-form {
       width: min(var(--rn-max), 100%);
       margin-left: auto;
       margin-right: auto;
@@ -159,7 +159,7 @@
       background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .03));
       box-shadow: 0 10px 28px rgba(0, 0, 0, .18);
     }
-    body:not(.dark-mode) #main, body:not(.dark-mode) #article {
+    body:not(.dark-mode) #main {
       background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(248, 250, 252, .94));
       box-shadow: 0 22px 56px rgba(15, 23, 42, .08);
     }
@@ -196,125 +196,6 @@
       letter-spacing: .01em;
       max-width: 860px;
       text-align: center;
-    }
-
-    /* ===== NOTICE BARS ===== */
-    #donate-message, #reddit-message, #desktop-app-alert {
-      width: fit-content;
-      max-width: min(100%, 720px);
-      margin: 0 auto 14px;
-      padding: 0;
-      border: none;
-      border-radius: 0;
-      background: transparent;
-      color: var(--page-muted);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    #donate-message, #desktop-app-alert {
-      width: min(100%, 760px);
-      margin-left: auto;
-      margin-right: auto;
-      padding: 12px 16px;
-      border: 1px solid var(--page-border-soft);
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .025));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px 12px;
-      flex-wrap: wrap;
-      text-align: center;
-    }
-    #donate-message {
-      margin-bottom: 18px;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: nowrap;
-      gap: 14px 16px;
-      padding: 20px 22px;
-    }
-    body:not(.dark-mode) #donate-message, body:not(.dark-mode) #desktop-app-alert {
-      border-color: rgba(15, 23, 42, .1);
-      background: linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(247, 250, 252, .94));
-      box-shadow: 0 14px 34px rgba(15, 23, 42, .05);
-    }
-
-    .notice-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, .06);
-      color: var(--page-text);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-    #donate-message .notice-badge { background: rgba(239, 68, 68, .14); color: #fecaca; }
-    #desktop-app-alert .notice-badge { background: rgba(34, 197, 94, .14); color: #bbf7d0; }
-    body:not(.dark-mode) .notice-badge { background: #e8eefc; color: #166534; }
-    body:not(.dark-mode) #donate-message .notice-badge { background: #fde7f1; color: #b91c1c; }
-    body:not(.dark-mode) #desktop-app-alert .notice-badge { background: #e0edff; color: #15803d; }
-
-    .notice-copy { color: var(--page-muted); }
-    #donate-message .notice-copy {
-      flex: 0 1 auto;
-      max-width: 640px;
-      text-align: left;
-      white-space: nowrap;
-    }
-    body:not(.dark-mode) .notice-copy { color: rgba(15, 23, 42, .72); }
-
-    .donate-button, .external-link-button, .desktop-app-button {
-      color: inherit;
-      font-weight: 700;
-      text-decoration: underline;
-      text-underline-offset: .18em;
-      cursor: pointer;
-    }
-    #donate-message .donate-button, #desktop-app-alert .desktop-app-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 38px;
-      padding: 10px 16px;
-      border-radius: 999px;
-      text-decoration: none;
-      font-size: 13px;
-      letter-spacing: .01em;
-      transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
-    }
-    #donate-message .donate-button {
-      border: 1px solid rgba(239, 68, 68, .28);
-      background: linear-gradient(135deg, rgba(239, 68, 68, .2), rgba(245, 158, 11, .18));
-      color: #ffffff;
-      box-shadow: 0 10px 28px rgba(239, 68, 68, .14);
-    }
-    #desktop-app-alert .desktop-app-button {
-      border: 1px solid rgba(34, 197, 94, .24);
-      background: rgba(34, 197, 94, .12);
-      color: var(--page-text);
-    }
-    body:not(.dark-mode) #donate-message .donate-button {
-      border-color: rgba(219, 39, 119, .34);
-      background: linear-gradient(135deg, #ef4444, #f59e0b);
-      color: #ffffff;
-      box-shadow: 0 12px 28px rgba(244, 114, 182, .2);
-    }
-    body:not(.dark-mode) #desktop-app-alert .desktop-app-button {
-      border-color: rgba(34, 197, 94, .28);
-      background: #e7f0ff;
-      color: #15803d;
-    }
-    #donate-message .donate-button:hover, #desktop-app-alert .desktop-app-button:hover {
-      opacity: 1;
-      transform: translateY(-1px);
-      filter: brightness(1.04);
     }
 
     /* ===== FORM ===== */
@@ -510,55 +391,6 @@
       flex-wrap: wrap;
     }
 
-    /* ===== ARTICLE ===== */
-    #article {
-      max-width: 980px;
-      margin-top: 0;
-      margin-bottom: 26px;
-      padding: 40px clamp(22px, 4vw, 44px);
-      border-radius: 8px;
-      font-size: 16px;
-      line-height: 1.8;
-      position: relative;
-      z-index: 1;
-      content-visibility: auto;
-      contain-intrinsic-size: 900px;
-    }
-    #article h1 {
-      height: auto;
-      margin: 0 0 20px;
-      font-size: 2.4rem;
-      text-align: left;
-    }
-    #article h2, #article h3, #article h4 {
-      margin: 30px 0 14px;
-      text-align: left;
-    }
-    #article h2 { font-size: 28px; }
-    #article h3 { font-size: 20px; }
-    #article p, #article li {
-      font-size: 15px;
-      line-height: 1.8;
-      text-align: left;
-    }
-    #article time {
-      display: inline-flex;
-      align-items: center;
-      margin-bottom: 18px;
-      padding: 0 0 0 14px;
-      border: none;
-      border-left: 1px solid var(--page-border);
-      border-radius: 0;
-      background: transparent;
-      font-size: 13px;
-      letter-spacing: .02em;
-    }
-    body.dark-mode #article h2, body.dark-mode #article h3, body.dark-mode #article h4 {
-      color: var(--page-text);
-    }
-    #article ol, #article ul { padding-left: 22px; }
-    #article li + li { margin-top: 10px; }
-
     /* ===== FOOTER ===== */
     footer {
       width: min(var(--rn-max), calc(100% - 8px));
@@ -585,7 +417,7 @@
     /* ===== RESPONSIVE ===== */
     @media only screen and (max-width: 980px) {
       body > header { width: calc(100% - 8px); }
-      #main, #article, #contact-form, .message { width: 100%; }
+      #main, #contact-form, .message { width: 100%; }
     }
 
     @media only screen and (max-width: 780px) {
@@ -628,13 +460,9 @@
       #form-result { align-items: stretch; }
       #result-actions { gap: 12px; }
       #result-actions > * { width: 100%; }
-      #donate-message, #desktop-app-alert { padding: 14px 14px; }
-      #donate-message { flex-direction: column; justify-content: center; flex-wrap: wrap; gap: 12px; }
-      #donate-message .notice-copy { text-align: center; white-space: normal; }
       #download-button, #home-button, #convert-button, #donate-button, #trim-button,
       .btn-dark, input[type="submit"].btn, input[type="submit"].btn-dark { width: 100%; }
-      #article { padding: 28px 18px; }
-      body > header, #main, #article, #contact-form, .contact-form, .message { box-shadow: none !important; }
+      body > header, #main, #contact-form, .contact-form, .message { box-shadow: none !important; }
     }
 
     @media only screen and (max-width: 520px) {
@@ -673,12 +501,6 @@
     <h1 id="title">YouTube Video Downloader</h1>
     <p class="tagline">100% safe, Ad-free YouTube to MP3 and MP4 converter</p>
 
-    <p id="donate-message">
-      <span class="notice-badge">Support</span>
-      <span class="notice-copy">Please donate to cover server costs.</span>
-      <a class="donate-button" href="/ko-fi/" rel="nofollow" target="_blank">Donate</a>
-    </p>
-
     <div data-state="idle" id="form">
       <!-- IDLE STATE -->
       <div class="form-state is-active" id="form-idle">
@@ -694,7 +516,7 @@
           <div id="mp3" style="display: none;">
             <p>MP3 quality</p>
             <select aria-label="mp3-quality" id="mp3-quality">
-              <option value="320">320k</option>
+              <option value="320">320k (highest)</option>
               <option value="256">256k</option>
               <option value="192">192k</option>
               <option value="128">128k</option>
@@ -705,7 +527,7 @@
           <div id="mp4" style="display: block;">
             <p>MP4 quality</p>
             <select aria-label="mp4-quality" id="mp4-quality">
-              <option value="1080">1080p</option>
+              <option value="1080" selected>1080p (highest)</option>
               <option value="720">720p</option>
               <option value="480">480p</option>
               <option value="360">360p</option>
@@ -726,43 +548,6 @@
       <!-- RESULT STATE -->
       <div aria-live="polite" class="form-state" id="form-result"></div>
     </div>
-
-    <p id="desktop-app-alert">
-      <span class="notice-badge">Desktop App</span>
-      <span class="notice-copy">Try our Windows and Mac App</span>
-      <a class="desktop-app-button" href="https://ytdfp.com/" rel="sponsored" target="_blank">Download</a>
-    </p>
-  </div>
-
-  <!-- ===== ARTICLE ===== -->
-  <div id="article">
-    <h2>Y2Mate: YouTube Video Downloader, Free and Safe YouTube to MP3 and MP4 Converter</h2>
-    <time datetime="17 Nov 2026 01:23:17 PM">17 Nov 2026 01:23:17 PM</time>
-    <p><a href="/">Y2Mate</a> is designed for anyone who needs a straightforward way to save YouTube videos for offline listening or watching. Copy a YouTube video link or Shorts link, choose MP3 or MP4, pick the quality you want, and start the download without registering an account.</p>
-    <p>This YouTube video downloader keeps the main workflow simple. MP3 is useful for podcasts, music, lectures, interviews, and other audio-based content. MP4 is the better option when you want the full video available on your smartphone, laptop, tablet, or desktop.</p>
-    <h3>Why Choose Y2Mate?</h3>
-    <ul>
-      <li>The interface is ad-free and does not display unnecessary pop-ups.</li>
-      <li>Support for YouTube to MP3 audio downloads and YouTube to MP4 video downloads.</li>
-      <li>Quality options range from lighter files to higher quality output.</li>
-      <li>Works in modern browsers on Windows, Mac, Android, and iOS.</li>
-    </ul>
-    <h3>How It Works</h3>
-    <ol>
-      <li>Copy the YouTube video URL or Shorts URL.</li>
-      <li>Paste the link into the Y2Mate download box.</li>
-      <li>Select MP3 or MP4.</li>
-      <li>Choose the best quality for your device and connection.</li>
-      <li>Save the converted file.</li>
-    </ol>
-    <p>Most downloads take only a few clicks. The page is designed to keep the format, quality, and download controls visible, so you can finish the conversion quickly.</p>
-    <h3>Choosing MP3 or MP4 Quality</h3>
-    <p>For spoken audio, the standard MP3 option is usually enough and helps keep file sizes smaller. Music listeners may prefer higher bitrates if the original video has clear audio. For video downloads, lower MP4 resolutions download faster, while 720p or 1080p is better when you want a clearer picture.</p>
-    <h3>Why Y2Mate Stands Out</h3>
-    <p>Y2Mate focuses on a simple YouTube converter experience, with no sign-up required, easy controls, and support for the standard formats people use most. It is built for quick personal downloads and frequent use without making the site feel crowded.</p>
-    <h3>Responsible Use</h3>
-    <p>You should only convert or download content when you are legally allowed to do it. Copyright rules, creator rights, and platform terms remain in effect. Y2Mate is best suited for personal use, public-domain media, your own uploads, or other content where offline saving is permitted.</p>
-    <p>Copy the video URL, select the format, and download the file you need. The process is quick with Y2Mate, so the media you want is ready at the time and place you need it.</p>
   </div>
 
   <!-- ===== FOOTER ===== -->
@@ -864,7 +649,6 @@
         // Extract video ID to validate
         var videoId = extractVideoId(rawUrl);
         if (!videoId) {
-          // Still allow it — maybe the API handles other formats
           videoId = rawUrl;
         }
 
@@ -961,6 +745,7 @@
       // ---- URL PARAMETER AUTO-DOWNLOAD ----
       // Supports: ?url=... (or ?id=...), ?format=mp3|mp4 (or ?mp3 / ?mp4)
       // ?quality=320 (for mp3) or ?quality=1080 (for mp4)
+      // Defaults: MP4 1080p if no format specified.
       function autoDownloadFromParams() {
         var search = new URLSearchParams(window.location.search);
 
@@ -969,75 +754,4 @@
         if (!rawUrl) return; // no auto-download
 
         var videoId = extractVideoId(rawUrl);
-        if (!videoId && /^[a-zA-Z0-9_-]{11}$/.test(rawUrl)) {
-          videoId = rawUrl;
-        }
-
-        // Determine format from params
-        var formatParam = (search.get('format') || '').toLowerCase();
-        var isMp3 = false;
-        if (formatParam === 'mp3' || search.has('mp3')) {
-          isMp3 = true;
-        } else if (formatParam === 'mp4' || search.has('mp4')) {
-          isMp3 = false;
-        }
-
-        // Set format select
-        formatSelect.value = isMp3 ? '0' : '1';
-        updateFormatVisibility();
-
-        // Determine quality
-        var qualityParam = search.get('quality') || search.get('q') || '';
-        if (isMp3) {
-          // Default to highest: 320
-          if (qualityParam) {
-            // Accept "128", "128k", "128 kbps"
-            var q = qualityParam.replace(/[^0-9]/g, '');
-            var opts = Array.from(mp3Quality.options).map(function(o) { return o.value; });
-            if (opts.indexOf(q) !== -1) {
-              mp3Quality.value = q;
-            } else {
-              mp3Quality.value = '320'; // highest fallback
-            }
-          } else {
-            mp3Quality.value = '320'; // highest default
-          }
-        } else {
-          // Default to highest: 1080
-          if (qualityParam) {
-            var q = qualityParam.replace(/[^0-9]/g, '');
-            var opts = Array.from(mp4Quality.options).map(function(o) { return o.value; });
-            if (opts.indexOf(q) !== -1) {
-              mp4Quality.value = q;
-            } else {
-              mp4Quality.value = '1080'; // highest fallback
-            }
-          } else {
-            mp4Quality.value = '1080'; // highest default
-          }
-        }
-
-        // Set URL input
-        urlInput.value = videoId ? buildUrl(videoId) : rawUrl;
-
-        // Trigger conversion after a short delay (so page settles)
-        setTimeout(function() {
-          doConvert();
-        }, 300);
-      }
-
-      // ---- Init ----
-      if (document.body.classList.contains('dark-mode')) {
-        darkModeSwitch.textContent = 'Light Mode ☼';
-      } else {
-        darkModeSwitch.textContent = 'Dark Mode ☾';
-      }
-
-      // Run auto-download if params present
-      autoDownloadFromParams();
-
-    })();
-  </script>
-
-</body>
-</html>
+        if
